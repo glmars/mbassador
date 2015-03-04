@@ -5,6 +5,7 @@ import net.engio.mbassy.dispatch.HandlerInvocation;
 import net.engio.mbassy.dispatch.el.ElFilter;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -134,7 +135,21 @@ public class MessageHandler {
         this.isSynchronized = (Boolean)properties.get(Properties.IsSynchronized);
         this.handledMessages = (Class[])properties.get(Properties.HandledMessages);
     }
-
+    
+    protected MessageHandler() {
+        this.handler = null;
+        this.filter = null;
+        this.condition = null;
+        this.priority = 0;
+        this.invocation = null;
+        this.invocationMode = null;
+        this.isEnvelope = false;
+        this.acceptsSubtypes = false;
+        this.listenerConfig = null;
+        this.isSynchronized = false;
+        this.handledMessages = null;
+    }
+    
     private void validate(Map<String, Object> properties){
         // define expected types of known properties
         Object[][] expectedProperties = new Object[][]{
@@ -225,4 +240,7 @@ public class MessageHandler {
         return acceptsSubtypes;
     }
 
+    public void invoke( final Object listener, final Object message) throws InvocationTargetException, IllegalAccessException, IllegalArgumentException {
+        handler.invoke( listener, message );
+    }
 }
