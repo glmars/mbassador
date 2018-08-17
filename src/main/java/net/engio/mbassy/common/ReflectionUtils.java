@@ -28,7 +28,7 @@ public class ReflectionUtils
 		catch ( Exception e ) {
 			//nop
 		}
-		if ( !target.equals( Object.class ) ) {
+		if ( target.getSuperclass() != null ) {
 			methods.addAll( getMethods( condition, target.getSuperclass() ) );
 		}
 		return methods;
